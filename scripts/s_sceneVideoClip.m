@@ -24,6 +24,10 @@ tStart = tic;
 % capture and processing
 ourCamera = cpBurstCamera(); 
 
+% Specify the number of frames for our video
+numFrames = 3; % Total number of frames to render
+videoFPS = 10; % How many frames per second to encode
+
 % We'll use a pre-defined sensor for our Camera Module, and let it use
 % default optics for now. We can then assign the module to our camera:
 % NOTE: When generating just scenes, this is ignored
@@ -34,15 +38,12 @@ sensor = sensorCreate('imx363');
 nativeSensorResolution = 2048; % about real life
 aspectRatio = 4/3;  % Set to desired ratio
 
-% Specify the number of frames for our video
-numFrames = 3; % Total number of frames to render
-videoFPS = 10; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 512;
 
 % Fast Preview Factor
-fastPreview = 32 ; % multiplierfor optional faster rendering
+fastPreview = 4 ; % multiplierfor optional faster rendering
 raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 
 ourRows = floor(nativeSensorResolution / fastPreview);
@@ -62,52 +63,29 @@ sensor.pixel = pixelSet(sensor.pixel,'sizesamefillfactor',[previewPSize previewP
 % but for now, we just create one using our sensor
 ourCamera.cmodules(1) = cpCModule('sensor', sensor); 
 
+%}
 
 scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
-sceneWidth = 40; % rough width of scene in meters
-sceneHeight = 25; % rough height of scene in meters
-desiredXRotation = 55; % how many degrees do we want to rotate down
-desiredYRotation = 150; % how many degrees do we want to rotate left
-xGravity = .1; % Inverse of how many scene widths to move horizontally
-yGravity = .1; % Inverse of how many scene widths to move vertically
-zDistance = 2; % Meters into scene
+sceneWidth = 4; % rough width of scene in meters, kind of:)
+sceneHeight = 2; % rough height of scene in meters
+desiredXRotation = 1; %5; % how many degrees do we want to rotate down
+desiredYRotation = 1; %10; % how many degrees do we want to rotate left
+xGravity = .01; %.1; % Inverse of how many scene widths to move horizontally
+yGravity = .01; %.1; % Inverse of how many scene widths to move vertically
+zDistance = .01; %1; % Meters into scene
 
-pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ...
-    'resolution', [ourCols ourRows], ... 
-    'sceneLuminance', 500, ...
-    'numRays', raysPerPixel);
-
-%{
-% This section is just for when using our scenes
-% add the basic materials from our library
-piMaterialsInsert(pbrtCPScene.thisR);
-
-% clear out any default lights
-pbrtCPScene.thisR = piLightDelete(pbrtCPScene.thisR, 'all');
-
-% put our scene in an interesting room
-pbrtCPScene.thisR.set('skymap', 'room.exr', 'rotation val', [-90 180 0]);
-
-lightName = 'from camera';
-spectrumScale = 3; lightSpectrum = 'equalEnergy';
-ourLight = piLightCreate(lightName,...
-                           'type', 'distant',...
-                           'specscale float', spectrumScale,...
-                           'spd spectrum', lightSpectrum,...
-                           'cameracoordinate', true);
-
-pbrtCPScene.thisR.set('light', ourLight, 'add');
-%}
-
-
+pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName);
+%    'sceneLuminance', 500, ...
+%    'numRays', raysPerPixel, ...
+%     'resolution', [ourCols ourRows]);
 
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
 % Z is into scene, Y is up, X is right
 translateZPerFrame = zDistance / numFrames; 
-translateYPerFrame = (sceneHeight / numFrames) / yGravity;
-translateXPerFrame = (sceneWidth / numFrames) / xGravity;
+translateYPerFrame = (sceneHeight / numFrames) * yGravity;
+translateXPerFrame = (sceneWidth / numFrames) * xGravity;
 
 % X-axis is 'vertical' rotation, Y-axis is 'horizontal'
 rotateXPerFrame =  -1 * (desiredXRotation / numFrames);
