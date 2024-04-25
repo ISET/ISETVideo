@@ -37,7 +37,7 @@ numFrames = 16; % Total number of frames to render
 videoFPS = 8; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel =  512;
+nativeRaysPerPixel =  64; % 512;
 
 % Fast Preview Factor
 fastPreview = 1; % 16 ; % multiplierfor optional faster rendering
@@ -75,6 +75,8 @@ yGravity = 4; % Inverse of how many scene widths to move vertically
 
 scenePath = 'cornell_box';
 sceneName = 'cornell_box';
+scenePath = 'ChessSet';
+sceneName = 'ChessSet';
 sceneWidth = 2; % rough width of scene in meters
 sceneHeight = 1; % rough height of scene in meters
 desiredXRotation = 55; % how many degrees do we want to rotate down
@@ -146,11 +148,12 @@ if strcmp(scenePath, "cornell_box")
 elseif isequal(sceneName, 'ChessSet')
     % try moving a chess piece
     % NOTE: This is currently ignored when rendering on GPU
+    %{
     pbrtCPScene.objectMotion = {{'001_ChessSet_mesh_00005_O', ...
         [0, .1, 0], [0, 0, 0]}};
     pbrtCPScene.objectMotion = {{'001_ChessSet_mesh_00004_O', ...
         [0, 1, 0], [0, 0, 0]}};
-
+    %}
     % set scene FOV to align with camera
     % Not clear this does what we want?
     %pbrtCPScene.thisR.recipeSet('fov',90);
