@@ -35,15 +35,15 @@ sensor = sensorCreate('imx363');
 
 % The sensor comes in with a small default resolution, and in any case
 % well want to decide on one for ourselves:
-nativeSensorResolution = 2048; % about real life
+nativeSensorResolution = 1024; %
 aspectRatio = 4/3;  % Set to desired ratio
 
 
 % Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel = 512;
+nativeRaysPerPixel = 256;
 
 % Fast Preview Factor
-fastPreview = 4 ; % multiplierfor optional faster rendering
+fastPreview = 1 ; % multiplierfor optional faster rendering
 raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 
 ourRows = floor(nativeSensorResolution / fastPreview);
@@ -67,18 +67,18 @@ ourCamera.cmodules(1) = cpCModule('sensor', sensor);
 
 scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
-sceneWidth = 4; % rough width of scene in meters, kind of:)
-sceneHeight = 2; % rough height of scene in meters
+sceneWidth = 20; % rough width of scene in meters, kind of:)
+sceneHeight = 10; % rough height of scene in meters
 desiredXRotation = 0; %5; % how many degrees do we want to rotate down
-desiredYRotation = 0; %10; % how many degrees do we want to rotate left
-xGravity = .01; %.1; % Inverse of how many scene widths to move horizontally
-yGravity = .1; %.1; % Inverse of how many scene widths to move vertically
-zDistance = .1; %1; % Meters into scene
+desiredYRotation = -1; %10; % how many degrees do we want to rotate left
+xGravity = .02; %.1; % Inverse of how many scene widths to move horizontally
+yGravity = .02; %.1; % Inverse of how many scene widths to move vertically
+zDistance = 0; %1; % Meters into scene
 
-pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName);
-%    'sceneLuminance', 500, ...
-%    'numRays', raysPerPixel, ...
-%     'resolution', [ourCols ourRows]);
+pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ...
+    'sceneLuminance', 500, ...
+    'numRays', raysPerPixel, ...
+    'resolution', [ourCols ourRows]);
 
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
@@ -95,14 +95,8 @@ pbrtCPScene.cameraMotion = {{'unused', ...
     [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
     [rotateXPerFrame, rotateYPerFrame, 0]}};
 
-[sceneList, sceneFiles] = pbrtCPScene.render(repelem(.1, numFrames));
+[sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(.1, numFrames));
 
-% for viewing scenes
-saveDir = fullfile(ivRootPath, 'local');
-for ii=1:numel(sceneList)
-    saveFile = fullfile(saveDir, ['frame' num2str(ii) '.exr']);
-    
-end
 
 %{
 % For when we want to have a real camera
