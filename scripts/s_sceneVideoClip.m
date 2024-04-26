@@ -25,7 +25,7 @@ tStart = tic;
 ourCamera = cpBurstCamera(); 
 
 % Specify the number of frames for our video
-numFrames = 3; % Total number of frames to render
+numFrames = 10; % Total number of frames to render
 videoFPS = 10; % How many frames per second to encode
 
 % We'll use a pre-defined sensor for our Camera Module, and let it use
@@ -69,11 +69,11 @@ scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
 sceneWidth = 4; % rough width of scene in meters, kind of:)
 sceneHeight = 2; % rough height of scene in meters
-desiredXRotation = 1; %5; % how many degrees do we want to rotate down
-desiredYRotation = 1; %10; % how many degrees do we want to rotate left
+desiredXRotation = 0; %5; % how many degrees do we want to rotate down
+desiredYRotation = 0; %10; % how many degrees do we want to rotate left
 xGravity = .01; %.1; % Inverse of how many scene widths to move horizontally
-yGravity = .01; %.1; % Inverse of how many scene widths to move vertically
-zDistance = .01; %1; % Meters into scene
+yGravity = .1; %.1; % Inverse of how many scene widths to move vertically
+zDistance = .1; %1; % Meters into scene
 
 pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName);
 %    'sceneLuminance', 500, ...
@@ -95,7 +95,14 @@ pbrtCPScene.cameraMotion = {{'unused', ...
     [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
     [rotateXPerFrame, rotateYPerFrame, 0]}};
 
-[sceneList, sceneFiles] = pbrtCPScene.render([.1 .1 .1]);
+[sceneList, sceneFiles] = pbrtCPScene.render(repelem(.1, numFrames));
+
+% for viewing scenes
+saveDir = fullfile(ivRootPath, 'local');
+for ii=1:numel(sceneList)
+    saveFile = fullfile(saveDir, ['frame' num2str(ii) '.exr']);
+    
+end
 
 %{
 % For when we want to have a real camera
