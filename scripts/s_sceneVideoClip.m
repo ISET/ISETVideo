@@ -9,10 +9,10 @@
 % with a cpBurstCamera in 'video' mode to capture a series
 % of 3D images generated using ISET3d-v4/pbrt-v4.
 % 
-% Camera motion is supported on CPU and GPU.
-% Currently Object Motion is only supported on CPU (PBRT-v4 limitation)
-% 
-% Developed by David Cardinal, Stanford University, 2024.
+% Camera motion and Object Motion are only supported on CPU (PBRT-v4 limitation)
+% So currently our camera motion happens between frames
+%
+% Developed by David Cardinal, Stanford University, 2020-2024.
 %
 
 ieInit();
@@ -24,9 +24,31 @@ tStart = tic;
 % capture and processing
 ourCamera = cpBurstCamera(); 
 
-% Specify the number of frames for our video
-numFrames = 10; % Total number of frames to render
+%% Our Parameters (could be passed if we make this a function)
+
+% scene
+scenePath = 'sanmiguel';
+sceneName = 'sanmiguel-courtyard';
+
+% In m/s and d/s
+cameraMotion.x = 1; % m/s x, y, z, rx, ry, rz
+cameraMotion.y = 1; % m/s x, y, z, rx, ry, rz
+cameraMotion.z = 1; % m/s x, y, z, rx, ry, rz
+cameraMotion.xRot = 10; % m/s x, y, z, rx, ry, rz
+cameraMotion.yRot = 10; % m/s x, y, z, rx, ry, rz
+cameraMotion.zRot = 10; % m/s x, y, z, rx, ry, rz
+
+clipLength = .05; % seconds
+exposureTime = .005; % seconds
 videoFPS = 10; % How many frames per second to encode
+
+% Rays per pixel (more is slower, but less noisy)
+nativeRaysPerPixel = 256;
+% Fast Preview Factor
+fastPreview = 1 ; % >1 is multiplierfor for faster rendering
+
+% Specify the number of frames for our video
+numFrames = floor(clipLength / exposureTime);
 
 % We'll use a pre-defined sensor for our Camera Module, and let it use
 % default optics for now. We can then assign the module to our camera:
@@ -37,13 +59,6 @@ sensor = sensorCreate('imx363');
 % well want to decide on one for ourselves:
 nativeSensorResolution = 1024; %
 aspectRatio = 4/3;  % Set to desired ratio
-
-
-% Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel = 256;
-
-% Fast Preview Factor
-fastPreview = 1 ; % multiplierfor optional faster rendering
 raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 
 ourRows = floor(nativeSensorResolution / fastPreview);
@@ -65,16 +80,6 @@ ourCamera.cmodules(1) = cpCModule('sensor', sensor);
 
 %}
 
-scenePath = 'sanmiguel';
-sceneName = 'sanmiguel-courtyard';
-sceneWidth = 20; % rough width of scene in meters, kind of:)
-sceneHeight = 10; % rough height of scene in meters
-desiredXRotation = 0; %5; % how many degrees do we want to rotate down
-desiredYRotation = -1; %10; % how many degrees do we want to rotate left
-xGravity = .02; %.1; % Inverse of how many scene widths to move horizontally
-yGravity = .02; %.1; % Inverse of how many scene widths to move vertically
-zDistance = 0; %1; % Meters into scene
-
 pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ...
     'sceneLuminance', 500, ...
     'numRays', raysPerPixel, ...
@@ -83,17 +88,21 @@ pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ..
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
 % Z is into scene, Y is up, X is right
-translateZPerFrame = zDistance / numFrames; 
-translateYPerFrame = (sceneHeight / numFrames) * yGravity;
-translateXPerFrame = (sceneWidth / numFrames) * xGravity;
+
+framesPerSecond = floor(1/exposureTime);
 
 % X-axis is 'vertical' rotation, Y-axis is 'horizontal'
-rotateXPerFrame =  -1 * (desiredXRotation / numFrames);
-rotateYPerFrame = -1 * (desiredYRotation / numFrames);
+translateXPerFrame = cameraMotion.x / framesPerSecond; 
+translateYPerFrame = cameraMotion.y / framesPerSecond; 
+translateZPerFrame = cameraMotion.z / framesPerSecond; 
 
-pbrtCPScene.cameraMotion = {{'unused', ...
+rotateXPerFrame = cameraMotion.xRot / framesPerSecond;
+rotateYPerFrame = cameraMotion.yRot / framesPerSecond;
+rotateZPerFrame = cameraMotion.zRot / framesPerSecond;
+
+pbrtCPScene.cameraMotion = {{'our camera', ...
     [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
-    [rotateXPerFrame, rotateYPerFrame, 0]}};
+    [rotateXPerFrame, rotateYPerFrame, rotateZPerFrame]}};
 
 [sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(.1, numFrames));
 
