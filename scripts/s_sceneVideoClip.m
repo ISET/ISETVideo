@@ -29,17 +29,18 @@ ourCamera = cpBurstCamera();
 % scene
 scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
+sceneName = 'sanmiguel-realistic-courtyard';
 
 % In m/s and d/s
-cameraMotion.x = 1; % m/s x, y, z, rx, ry, rz
-cameraMotion.y = 1; % m/s x, y, z, rx, ry, rz
-cameraMotion.z = 1; % m/s x, y, z, rx, ry, rz
+cameraMotion.x = -2; % m/s x, y, z, rx, ry, rz
+cameraMotion.y = -2; % m/s x, y, z, rx, ry, rz
+cameraMotion.z = 2; % m/s x, y, z, rx, ry, rz
 cameraMotion.xRot = 10; % m/s x, y, z, rx, ry, rz
 cameraMotion.yRot = 10; % m/s x, y, z, rx, ry, rz
-cameraMotion.zRot = 10; % m/s x, y, z, rx, ry, rz
+cameraMotion.zRot = 0; % m/s x, y, z, rx, ry, rz
 
-clipLength = .05; % seconds
-exposureTime = .005; % seconds
+clipLength = .02; % seconds
+exposureTime = .001; % seconds
 videoFPS = 10; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
@@ -106,24 +107,25 @@ pbrtCPScene.cameraMotion = {{'our camera', ...
 
 [sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(.1, numFrames));
 
+% renderedFiles has the .exr files, sceneList has the .mat files for scenes
+videoFolder = fullfile(ivRootPath(),'local');
+videoFile = fullfile(videoFolder, 'fpsDemo');
+videoFrames = [];
+for ii=1:numel(sceneList)
+    ourFrame = sceneShowImage(sceneList{ii},-1);    % Compute, but don't show
+    videoFrames{ii} = ourFrame;
+end
 
-%{
-% For when we want to have a real camera
-videoFrames = ourCamera.TakePicture(pbrtCPScene, ...
-    'Video', 'numVideoFrames', numFrames, 'imageName','Video with Camera Motion');
-
-% optionally, take a peek
-imtool(videoFrames{4});
 if isunix
-    demoVideo = VideoWriter('cpDemo', 'Motion JPEG AVI');
+    demoVideo = VideoWriter('fpsDemo', 'Motion JPEG AVI');
 else
     % H.264 only works on Windows and Mac
-    demoVideo = VideoWriter('cpDemo', 'MPEG-4');
+    demoVideo = VideoWriter('fpsDemo', 'MPEG-4');
 end
 demoVideo.FrameRate = videoFPS;
 demoVideo.Quality = 99;
 open(demoVideo);
-for ii = 2:numel(videoFrames)
+for ii = 1:numel(videoFrames)
     writeVideo(demoVideo,videoFrames{ii});
 end
 close (demoVideo);
