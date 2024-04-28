@@ -30,18 +30,24 @@ ourCamera = cpBurstCamera();
 scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
 sceneName = 'sanmiguel-realistic-courtyard';
+scenePath = 'barcelona-pavilion';
+sceneName = 'pavilion-night';
+scenePath = 'bistro';
+sceneName = 'bistro_boulangerie';
+%sceneName = 'bistro_cafe';
+%sceneName = 'bistro_vespa';
 
 % In m/s and d/s
-cameraMotion.x = -2; % m/s x, y, z, rx, ry, rz
-cameraMotion.y = -2; % m/s x, y, z, rx, ry, rz
-cameraMotion.z = 2; % m/s x, y, z, rx, ry, rz
-cameraMotion.xRot = 10; % m/s x, y, z, rx, ry, rz
-cameraMotion.yRot = 10; % m/s x, y, z, rx, ry, rz
-cameraMotion.zRot = 0; % m/s x, y, z, rx, ry, rz
+cameraMotion.x = -2; % m/s x, y, z
+cameraMotion.y = -2; % m/s x, y, z
+cameraMotion.z = 2; % m/s x, y, z
+cameraMotion.xRot = 10; % d/s rx, ry, rz
+cameraMotion.yRot = 10; % d/s rx, ry, rz
+cameraMotion.zRot = 0; % d/s rx, ry, rz
 
 clipLength = .02; % seconds
 exposureTime = .001; % seconds
-videoFPS = 10; % How many frames per second to encode
+videoFPS = 2; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 256;
@@ -105,22 +111,23 @@ pbrtCPScene.cameraMotion = {{'our camera', ...
     [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
     [rotateXPerFrame, rotateYPerFrame, rotateZPerFrame]}};
 
-[sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(.1, numFrames));
+[sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(exposureTime, numFrames));
 
 % renderedFiles has the .exr files, sceneList has the .mat files for scenes
 videoFolder = fullfile(ivRootPath(),'local');
 videoFile = fullfile(videoFolder, 'fpsDemo');
 videoFrames = [];
 for ii=1:numel(sceneList)
-    ourFrame = sceneShowImage(sceneList{ii},-1);    % Compute, but don't show
+    ourFrame = sceneShowImage(sceneList{ii},-3);    % Compute, but don't show
     videoFrames{ii} = ourFrame;
 end
 
+videoFileName = fullfile(ivRootPath, 'local', [sceneName '-video']);
 if isunix
-    demoVideo = VideoWriter('fpsDemo', 'Motion JPEG AVI');
+    demoVideo = VideoWriter(videoFileName, 'Motion JPEG AVI');
 else
     % H.264 only works on Windows and Mac
-    demoVideo = VideoWriter('fpsDemo', 'MPEG-4');
+    demoVideo = VideoWriter(videoFileName, 'MPEG-4');
 end
 demoVideo.FrameRate = videoFPS;
 demoVideo.Quality = 99;
