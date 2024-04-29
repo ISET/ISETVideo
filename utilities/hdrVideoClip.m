@@ -1,6 +1,8 @@
 function outputVideo = hdrVideoClip(filespec)
 %HDRVIDEOCLIP Create a video from a list of .exr files
 
+videoFPS = 2; % show slowly
+
 hdrList = dir(filespec);
 [hdrPath, basename, ~] = fileparts(filespec);
 outputVideoPrefix = fullfile(hdrPath, [basename '-video']);
@@ -17,7 +19,7 @@ demoVideo.FrameRate = videoFPS;
 demoVideo.Quality = 99;
 open(demoVideo);
 for ii = 1:numel(hdrList)
-    hdr = hdrread(hdrList(ii));
+    hdr = exrread(fullfile(hdrList(ii).folder,hdrList(ii).name));
     rgb = tonemap(hdr);
     writeVideo(demoVideo,rgb);
 end
