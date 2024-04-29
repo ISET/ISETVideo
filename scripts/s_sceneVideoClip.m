@@ -27,13 +27,13 @@ ourCamera = cpBurstCamera();
 %% Our Parameters (could be passed if we make this a function)
 
 % scene
-scenePath = 'sanmiguel';
-sceneName = 'sanmiguel-courtyard';
+%scenePath = 'sanmiguel';
+%sceneName = 'sanmiguel-courtyard';
 %sceneName = 'sanmiguel-realistic-courtyard';
 %scenePath = 'barcelona-pavilion';
 %sceneName = 'pavilion-night';
-%scenePath = 'bistro';
-%sceneName = 'bistro_boulangerie';
+scenePath = 'bistro';
+sceneName = 'bistro_boulangerie';
 %%sceneName = 'bistro_cafe';
 %sceneName = 'bistro_vespa';
 % Can't render Kroken due to mixed texture bug

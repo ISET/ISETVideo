@@ -9,18 +9,21 @@ outputVideoPrefix = fullfile(hdrPath, [basename '-video']);
 
 
 if isunix
-    demoVideo = VideoWriter(outputVideoPrefix, 'Motion JPEG AVI');
+    demoVideo = VideoWriter(outputVideoPrefix,  'Uncompressed AVI'); % 'Motion JPEG AVI');
 else
     % H.264 only works on Windows and Mac
     demoVideo = VideoWriter(outputVideoPrefix, 'MPEG-4');
 end
 
 demoVideo.FrameRate = videoFPS;
-demoVideo.Quality = 99;
+% Don't set quality if archival
+%demoVideo.Quality = 90;
 open(demoVideo);
 for ii = 1:numel(hdrList)
     hdr = exrread(fullfile(hdrList(ii).folder,hdrList(ii).name));
-    rgb = tonemap(hdr);
+    % DOESN"T WORK rgb = tonemap(real(hdr));
+    rgb = single(hdrRender(hdr));
+    %imshow(rgb);
     writeVideo(demoVideo,rgb);
 end
 close (demoVideo);
