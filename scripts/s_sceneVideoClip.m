@@ -29,13 +29,16 @@ ourCamera = cpBurstCamera();
 % scene
 scenePath = 'sanmiguel';
 sceneName = 'sanmiguel-courtyard';
-sceneName = 'sanmiguel-realistic-courtyard';
-scenePath = 'barcelona-pavilion';
-sceneName = 'pavilion-night';
-scenePath = 'bistro';
-sceneName = 'bistro_boulangerie';
-%sceneName = 'bistro_cafe';
+%sceneName = 'sanmiguel-realistic-courtyard';
+%scenePath = 'barcelona-pavilion';
+%sceneName = 'pavilion-night';
+%scenePath = 'bistro';
+%sceneName = 'bistro_boulangerie';
+%%sceneName = 'bistro_cafe';
 %sceneName = 'bistro_vespa';
+% Can't render Kroken due to mixed texture bug
+%scenePath = 'kroken';
+%sceneName = 'camera-1';
 
 % In m/s and d/s
 cameraMotion.x = -2; % m/s x, y, z
