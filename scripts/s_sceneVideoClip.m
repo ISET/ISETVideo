@@ -22,7 +22,7 @@ tStart = tic;
 
 % cpBurstCamera is a sub-class of cpCamera that implements simple HDR and Burst
 % capture and processing
-ourCamera = cpBurstCamera(); 
+%# ourCamera = cpBurstCamera(); 
 
 %% Our Parameters (could be passed if we make this a function)
 
@@ -66,7 +66,7 @@ videoFPS = 2; % How many frames per second to encode
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
 % Fast Preview Factor
-fastPreview = 1 ; % >1 is multiplierfor for faster rendering
+fastPreview = 8 ; % >1 is multiplierfor for faster rendering
 
 % Specify the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -74,7 +74,7 @@ numFrames = floor(clipLength / exposureTime);
 % We'll use a pre-defined sensor for our Camera Module, and let it use
 % default optics for now. We can then assign the module to our camera:
 % NOTE: When generating just scenes, this is ignored
-sensor = sensorCreate('imx363');
+%# sensor = sensorCreate('imx363');
 
 % The sensor comes in with a small default resolution, and in any case
 % well want to decide on one for ourselves:
@@ -85,19 +85,19 @@ raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 ourRows = floor(nativeSensorResolution / fastPreview);
 ourCols = floor(aspectRatio * ourRows); 
 
-sensor = sensorSet(sensor,'size',[ourRows ourCols]);
-sensor = sensorSet(sensor,'noiseFlag', 0); % 0 is less noise
+%# sensor = sensorSet(sensor,'size',[ourRows ourCols]);
+%# sensor = sensorSet(sensor,'noiseFlag', 0); % 0 is less noise
 
 % Make the pixels bigger, but keep the sensor the same size
 % This is useful for previewing more quickly:
-nativePSize = pixelGet(sensor.pixel,'pixel width');
-previewPSize = nativePSize * fastPreview;
-sensor.pixel = pixelSet(sensor.pixel,'sizesamefillfactor',[previewPSize previewPSize]);
+%# nativePSize = pixelGet(sensor.pixel,'pixel width');
+%# previewPSize = nativePSize * fastPreview;
+%# sensor.pixel = pixelSet(sensor.pixel,'sizesamefillfactor',[previewPSize previewPSize]);
 
 
 % Cameras can eventually have more than one module (lens + sensor)
 % but for now, we just create one using our sensor
-ourCamera.cmodules(1) = cpCModule('sensor', sensor); 
+%# ourCamera.cmodules(1) = cpCModule('sensor', sensor); 
 
 %}
 
