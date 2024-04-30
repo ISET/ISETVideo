@@ -23,7 +23,9 @@ demoVideo.FrameRate = videoFPS;
 %demoVideo.Quality = 90;
 %open(demoVideo);
 for ii = 1:numel(hdrList)
-    hdr = exrread(fullfile(hdrList(ii).folder,hdrList(ii).name));
+    hdrFile = fullfile(hdrList(ii).folder,hdrList(ii).name);
+    piEXRDenoise(hdrFile);
+    hdr = exrread(hdrFile);
     hdr = max(hdr,0);
     % DOESN"T WORK rgb = tonemap(real(hdr));
     rgb = single(hdrRender(hdr));

@@ -26,19 +26,30 @@ ourCamera = cpBurstCamera();
 
 %% Our Parameters (could be passed if we make this a function)
 
-% scene
+% scenes
+
+%% Working
 %scenePath = 'sanmiguel';
 %sceneName = 'sanmiguel-courtyard';
 %sceneName = 'sanmiguel-realistic-courtyard';
-%scenePath = 'barcelona-pavilion';
-%sceneName = 'pavilion-night';
-scenePath = 'bistro';
-sceneName = 'bistro_boulangerie';
+scenePath = 'barcelona-pavilion';
+sceneName = 'pavilion-night';
+%scenePath = 'bistro';
+%sceneName = 'bistro_boulangerie';
 %%sceneName = 'bistro_cafe';
 %sceneName = 'bistro_vespa';
+%scenePath = 'contemporary-bathroom';
+%sceneName = 'contemporary-bathroom';
+%scenePath = 'landscape';
+%sceneName = 'view-0';
+
+%% Not working
 % Can't render Kroken due to mixed texture bug
 %scenePath = 'kroken';
 %sceneName = 'camera-1';
+% Can't render villa due to some type of wavefront error
+%scenePath = 'villa';
+%sceneName = 'villa-daylight';
 
 % In m/s and d/s
 cameraMotion.x = -2; % m/s x, y, z
@@ -53,7 +64,7 @@ exposureTime = .001; % seconds
 videoFPS = 2; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel = 256;
+nativeRaysPerPixel = 1024;
 % Fast Preview Factor
 fastPreview = 1 ; % >1 is multiplierfor for faster rendering
 
