@@ -66,7 +66,7 @@ videoFPS = 2; % How many frames per second to encode
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
 % Fast Preview Factor
-fastPreview = 8 ; % >1 is multiplierfor for faster rendering
+fastPreview = 2 ; % >1 is multiplierfor for faster rendering
 
 % Specify the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -132,8 +132,16 @@ videoFolder = fullfile(ivRootPath(),'local');
 videoFile = fullfile(videoFolder, 'fpsDemo');
 videoFrames = [];
 for ii=1:numel(sceneList)
-    ourFrame = sceneShowImage(sceneList{ii},-3);    % Compute, but don't show
-    videoFrames{ii} = ourFrame;
+    sceneList{ii} = sceneSet(sceneList{ii},'render flag','hdr');
+    % gets an error
+    %sceneList{ii} = sceneSet(sceneList{ii},'gamma',2.1);
+
+    deNoiseScene = piAIdenoise(sceneList{ii});
+    %ourFrame = sceneShowImage(deNoiseScene, -3);    % Compute, but don't show
+    ourIP = piRadiance2RGB(deNoiseScene);
+
+    % we may need to do oi/sensor/ip next
+    videoFrames{ii} = im2frame(double(ourIP.data.result));
 end
 
 videoFileName = fullfile(ivRootPath, 'local', [sceneName '-video']);
