@@ -24,16 +24,15 @@ demoVideo.FrameRate = videoFPS;
 %open(demoVideo);
 for ii = 1:numel(hdrList)
     hdrFile = fullfile(hdrList(ii).folder,hdrList(ii).name);
-    piEXRDenoise(hdrFile);
-    hdr = exrread(hdrFile);
-    hdr = max(hdr,0);
-    % DOESN"T WORK rgb = tonemap(real(hdr));
-    rgb = single(hdrRender(hdr));
-    %imshow(rgb);
-    %writeVideo(demoVideo,rgb);
+    scene = piEXR2ISET(hdrFile);
+    sceneDeNoise = piAIdenoise(scene);
+    % 
+    rgb = sceneShowImage(sceneDeNoise, -3); % HDR
     demoVideo(rgb);
+    clear scene;
+    clear sceneDeNoise;
+
 end
-%close (demoVideo);
 release(demoVideo);
 end
 
