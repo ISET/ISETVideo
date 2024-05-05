@@ -53,16 +53,16 @@ sceneName = 'pavilion-night';
 %sceneName = 'villa-daylight';
 
 % In m/s and d/s
-cameraMotion.x = -4; % m/s x, y, z
+cameraMotion.x = -12; % m/s x, y, z
 cameraMotion.y = 2; % m/s x, y, z
-cameraMotion.z = 4; % m/s x, y, z
-cameraMotion.xRot = 10; % d/s rx, ry, rz
-cameraMotion.yRot = 10; % d/s rx, ry, rz
-cameraMotion.zRot = 0; % d/s rx, ry, rz
+cameraMotion.z = 2; % m/s x, y, z
+cameraMotion.xRot = 25; % d/s rx, ry, rz
+cameraMotion.yRot = -40; % d/s rx, ry, rz
+cameraMotion.zRot = 00; % d/s rx, ry, rz
 
 clipLength = 1; %.02; % seconds
-exposureTime = 1/1000; %.001; % seconds
-videoFPS = 20; % How many frames per second to encode
+exposureTime = 1/16; %.001; % seconds
+videoFPS = 2; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
@@ -138,6 +138,8 @@ for ii=1:numel(sceneList)
     %sceneList{ii} = sceneSet(sceneList{ii},'gamma',2.1);
 
     deNoiseScene = piAIdenoise(sceneList{ii});
+    % quick run with no denoise
+    %deNoiseScene = sceneList{ii};
 
     % Experiment with different
     ourFrame = sceneShowImage(deNoiseScene, -3);    % Compute, but don't show
