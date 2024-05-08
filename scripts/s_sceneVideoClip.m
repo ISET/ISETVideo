@@ -33,8 +33,8 @@ tStart = tic;
 %sceneName = 'sanmiguel-courtyard';
 %sceneName = 'sanmiguel-realistic-courtyard';
 scenePath = 'barcelona-pavilion';
+%sceneName = 'pavilion-day';
 sceneName = 'pavilion-night';
-%sceneName = 'pavilion-night';
 %scenePath = 'bistro';
 %sceneName = 'bistro_boulangerie';
 %%sceneName = 'bistro_cafe';
@@ -53,16 +53,16 @@ sceneName = 'pavilion-night';
 %sceneName = 'villa-daylight';
 
 %% Set camera motion here
-cameraMotion = createCameraMotion('pavilion-night');
+cameraMotion = createCameraMotion(sceneName);
 
-clipLength = 1; %.02; % seconds
-exposureTime = 1/16; %.001; % seconds
+clipLength = .5; %.02; % seconds
+exposureTime = 1/30; %1/8; %.001; % seconds
 videoFPS = 2; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
 % Fast Preview Factor
-fastPreview = 4 ; % >1 is multiplierfor for faster rendering
+fastPreview = 1 ; % >1 is multiplierfor for faster rendering
 
 % Specify the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
