@@ -9,8 +9,8 @@
 % with a cpBurstCamera in 'video' mode to capture a series
 % of 3D images generated using ISET3d-v4/pbrt-v4.
 %
-% Camera motion and Object Motion are only supported on CPU (PBRT-v4 limitation)
-% So currently our camera motion happens between frames
+% As of May, 2024 we support camera motion on a GPU using either
+% ActiveTransforms or Rotate/Translate 
 %
 % Developed by David Cardinal, Stanford University, 2020-2024.
 %
@@ -52,14 +52,8 @@ sceneName = 'pavilion-night';
 %scenePath = 'villa';
 %sceneName = 'villa-daylight';
 
-% In m/s and d/s
-adjustScale = 1; % In pavilion x-axis is reversed
-cameraMotion.x = adjustScale * -12; % m/s x, y, z
-cameraMotion.y = -2; % m/s x, y, z
-cameraMotion.z = 4; % m/s x, y, z
-cameraMotion.xRot = 0; %25; % d/s rx, ry, rz
-cameraMotion.yRot = adjustScale * 40; % d/s rx, ry, rz
-cameraMotion.zRot = 0; % d/s rx, ry, rz
+%% Set camera motion here
+cameraMotion = createCameraMotion('pavilion-night');
 
 clipLength = 1; %.02; % seconds
 exposureTime = 1/16; %.001; % seconds
@@ -68,7 +62,7 @@ videoFPS = 2; % How many frames per second to encode
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
 % Fast Preview Factor
-fastPreview = 8 ; % >1 is multiplierfor for faster rendering
+fastPreview = 4 ; % >1 is multiplierfor for faster rendering
 
 % Specify the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -107,7 +101,7 @@ pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ..
     'sceneLuminance', 500, ...
     'numRays', raysPerPixel, ...
     'resolution', [ourCols ourRows],...
-    'useActiveCameraMotion', true);
+    'useActiveCameraMotion', cameraMotion.useActiveCameraMotion);
 
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
@@ -140,9 +134,8 @@ videoFile = fullfile(videoFolder, 'fpsDemo');
 videoFrames = [];
 for ii=1:numel(sceneList)
     sceneList{ii} = sceneSet(sceneList{ii},'render flag','hdr');
-    % gets an error
-    %sceneList{ii} = sceneSet(sceneList{ii},'gamma',2.1);
 
+    % dnoise if we are running with less rays per pixel
     if fastPreview > 1
         deNoiseScene = piAIdenoise(sceneList{ii});
     else
@@ -181,5 +174,21 @@ glData = rendererinfo;
 disp(strcat("Local cpCam ran  in: ", string(afterTime - beforeTime), " seconds of CPU time."));
 disp(strcat("Total cpCam ran  in: ", string(tTotal), " total seconds."));
 
+%% Create scene specific camera paths using x,y,z constant motions & rotations
+%  Set useActiveCameraMotion to use ActiveTransforms
+%  otherwise Translate and Rotate are used
+function cameraMotion = createCameraMotion(preset)
+switch preset
+    case {'pavilion-night', 'pavilion-day'}
+        % In m/s and d/s
+        cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
+        adjustScale = 1; % In pavilion x-axis is reversed
+        cameraMotion.x = adjustScale * -10; % m/s x, y, z
+        cameraMotion.y = -1; % m/s x, y, z
+        cameraMotion.z = 0; % m/s x, y, z
+        cameraMotion.xRot = -6; % d/s rx, ry, rz
+        cameraMotion.yRot = adjustScale * 30; % d/s rx, ry, rz
+        cameraMotion.zRot = 0; % d/s rx, ry, rz    end
 
-
+end
+end
