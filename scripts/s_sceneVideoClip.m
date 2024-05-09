@@ -30,8 +30,8 @@ tStart = tic;
 
 %% Primary scenes for video clip work
 scenePath = 'barcelona-pavilion';
-%sceneName = 'pavilion-night';
-sceneName = 'pavilion-day';
+sceneName = 'pavilion-night';
+%sceneName = 'pavilion-day';
 
 %% Also Working (at least without Active motion)
 %scenePath = 'sanmiguel';
@@ -59,8 +59,8 @@ cameraMotion = createCameraMotion(sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
 clipLength = .5; %.02; % seconds
-exposureTime = 1/60; %1/8; %.001; % seconds
-videoFPS = 2; % How many frames per second to encode
+exposureTime = 1/1000; %1/8; %.001; % seconds
+videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
@@ -130,10 +130,10 @@ else
         [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
         [rotateXPerFrame, rotateYPerFrame, rotateZPerFrame]}};
 end
-[sceneList, sceneFiles, renderedFiles] = pbrtCPScene.render(repelem(exposureTime, numFrames));
+[sceneList, ~, ~] = pbrtCPScene.render(repelem(exposureTime, numFrames));
 
 % renderedFiles has the .exr files, sceneList has the .mat files for scenes
-videoFolder = fullfile(ivRootPath(),'local');
+videoFolder = fullfile(ivRootPath(),'local','unfiled');
 videoFile = fullfile(videoFolder, 'fpsDemo');
 videoFrames = [];
 for ii=1:numel(sceneList)
