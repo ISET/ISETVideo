@@ -28,13 +28,15 @@ tStart = tic;
 
 % scenes
 
-%% Working
+%% Primary scenes for video clip work
+scenePath = 'barcelona-pavilion';
+%sceneName = 'pavilion-night';
+sceneName = 'pavilion-day';
+
+%% Also Working (at least without Active motion)
 %scenePath = 'sanmiguel';
 %sceneName = 'sanmiguel-courtyard';
 %sceneName = 'sanmiguel-realistic-courtyard';
-scenePath = 'barcelona-pavilion';
-%sceneName = 'pavilion-day';
-sceneName = 'pavilion-night';
 %scenePath = 'bistro';
 %sceneName = 'bistro_boulangerie';
 %%sceneName = 'bistro_cafe';
@@ -44,7 +46,7 @@ sceneName = 'pavilion-night';
 %scenePath = 'landscape';
 %sceneName = 'view-0';
 
-%% Not working
+%% Not working at all
 % Can't render Kroken due to mixed texture bug
 %scenePath = 'kroken';
 %sceneName = 'camera-1';
@@ -52,21 +54,23 @@ sceneName = 'pavilion-night';
 %scenePath = 'villa';
 %sceneName = 'villa-daylight';
 
-%% Set camera motion here
+%% Set camera motion here using a per-scene preset
 cameraMotion = createCameraMotion(sceneName);
 
+% Set overall length, frame rate, and preview video replay rate
 clipLength = .5; %.02; % seconds
-exposureTime = 1/30; %1/8; %.001; % seconds
+exposureTime = 1/60; %1/8; %.001; % seconds
 videoFPS = 2; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 1024;
-% Fast Preview Factor
+% Fast Preview Factor (we only denoise when fastPreview > 1)
 fastPreview = 1 ; % >1 is multiplierfor for faster rendering
 
-% Specify the number of frames for our video
+% Calculate the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
 
+%% NOTE: Currently we stop at Scene, so camera code is mostly moot
 % We'll use a pre-defined sensor for our Camera Module, and let it use
 % default optics for now. We can then assign the module to our camera:
 % NOTE: When generating just scenes, this is ignored

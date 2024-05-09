@@ -1,7 +1,11 @@
 function outputVideo = hdrVideoClip(filespec)
 %HDRVIDEOCLIP Create a video from a list of .exr files
 
-videoFPS = 2; % show slowly
+%{
+% example code
+hdrVideoClip('~/iset/isetvideo/local/pavilion-night/33 ms frames and preview video/pav*.exr');
+%}
+videoFPS = 30; % 2 is show slowly
 
 hdrList = dir(filespec);
 [hdrPath, basename, ~] = fileparts(filespec);
