@@ -18,17 +18,17 @@ if ~isfolder(outputDir)
 end
 
 for ii = 1:frames:numel(inputEXRs)
-    outputEXR = [];
+    outputScene = [];
     for jj = 1:frames
         if ii+jj <= numel(inputEXRs)
             nextEXR = fullfile(inputEXRs(ii+jj).folder, ...
                 inputEXRs(ii+jj).name);
             if isfile(nextEXR)
-                ourEXR = exrread(nextEXR);
-                if isempty(outputEXR)
-                    outputEXR = ourEXR;
+                ourScene = piEXR2ISET(nextEXR);
+                if isempty(outputScene)
+                    outputScene = ourScene;
                 else
-                    outputEXR = ourEXR + outputEXR;
+                    outputScene = sceneAdd(outputScene, ourScene);;
                 end
                 frameCount = jj;
             end
@@ -37,9 +37,10 @@ for ii = 1:frames:numel(inputEXRs)
         end
     end
     % need to write out
-    outputFileName = fullfile( outputDir, sprintf('%s-%03d-%03d.exr', ...
+    outputFileName = fullfile( outputDir, sprintf('%s-%03d-%03d.mat', ...
         basename, ii, ii+frameCount-1));
-    exrwrite(outputEXR,outputFileName);
+    save(outputFileName,'outputScene');
+    
 end
 end
 
