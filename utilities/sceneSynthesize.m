@@ -1,9 +1,11 @@
-function [outputArg1,outputArg2] = sceneSynthesize(filespec,frames)
+function sceneSynthesize(filespec,frames)
 %SCENESYNTHESIZE Add scenes (exr files or eventually scenes also)
 %   To synthesize longer exposures
+% WE need to change this to generate scenes
+% and then we can also make sure '1' works to turn exrs into scenes
 
 %{
-sceneSynthesize(fullfile(ivRootPath,'local', 'bistro_boulangerie*'),4);
+sceneSynthesize(fullfile(ivRootPath,'local', 'pavilion-night', 'frames-001ms', 'pav*.exr'),4);
 %}
 inputEXRs = dir(filespec);
 

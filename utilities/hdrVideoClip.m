@@ -3,6 +3,8 @@ function outputVideo = hdrVideoClip(filespec)
 
 %{
 % example code
+hdrVideoClip(fullfile(ivRootPath,'local', 'pavilion-night','frames-001ms','pav*.exr'))
+hdrVideoClip(fullfile(ivRootPath,'local', 'pavilion-night', 'frames-001ms','generated--004ms','pav*.exr'));
 hdrVideoClip('~/iset/isetvideo/local/pavilion-night/33 ms frames and preview video/pav*.exr');
 %}
 videoFPS = 30; % 2 is show slowly
