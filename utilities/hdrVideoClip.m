@@ -4,6 +4,7 @@ function outputVideo = hdrVideoClip(filespec)
 %{
 % example code
 hdrVideoClip(fullfile(ivRootPath,'local', 'pavilion-night','frames-001ms','pav*.exr'))
+hdrVideoClip(fullfile(ivRootPath,'local', 'pavilion-night','frames-033ms','pav*.exr'))
 hdrVideoClip(fullfile(ivRootPath,'local', 'pavilion-night', 'frames-001ms','generated--004ms','pav*.mat'));
 hdrVideoClip('~/iset/isetvideo/local/pavilion-night/33 ms frames and preview video/pav*.exr');
 %}

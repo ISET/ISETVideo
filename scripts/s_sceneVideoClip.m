@@ -58,8 +58,8 @@ sceneName = 'pavilion-night';
 cameraMotion = createCameraMotion(sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
-clipLength = .5; %.02; % seconds
-exposureTime = 1/1000; %1/8; %.001; % seconds
+clipLength = .2; %.02; % seconds
+exposureTime = 1/30; %1/8; %.001; % seconds
 videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)

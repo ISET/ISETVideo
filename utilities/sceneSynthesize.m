@@ -5,7 +5,8 @@ function sceneSynthesize(filespec,frames)
 % and then we can also make sure '1' works to turn exrs into scenes
 
 %{
-sceneSynthesize(fullfile(ivRootPath,'local', 'pavilion-night', 'frames-001ms', 'pav*.exr'),4);
+sceneSynthesize(fullfile(ivRootPath,'local', 'pavilion-night', 'frames-16ms', 'pav*.exr'),2);
+sceneSynthesize(fullfile(ivRootPath,'local', 'pavilion-night','frames-33ms','pav*.exr'),1)
 %}
 inputEXRs = dir(filespec);
 
