@@ -6,7 +6,9 @@ function sceneSynthesize(filespec,frames)
 
 %{
 sceneSynthesize(fullfile(ivDirGet('local'), 'pavilion-night', 'synthetic-scene-test', 'pav*033*.exr'),1);
-sceneSynthesize(fullfile(ivDirGet('local'), 'pavilion-night', 'synthetic-scene-test', 'pav*016*.exr'),2);
+
+sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*016*.exr'),2);
+sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*033*.exr'),1);
 
 sceneSynthesize(fullfile(ivDirGet('local'), 'pavilion-night', 'frames-16ms', 'pav*.exr'),2);
 sceneSynthesize(fullfile(ivDirGet('local'), 'pavilion-night','frames-33ms','pav*.exr'),1)
@@ -23,7 +25,7 @@ end
 
 for ii = 1:frames:numel(inputEXRs)
     outputScene = [];
-    for jj = 1:frames
+    for jj = 0:frames - 1
         if ii+jj <= numel(inputEXRs)
             nextEXR = fullfile(inputEXRs(ii+jj).folder, ...
                 inputEXRs(ii+jj).name);
@@ -42,7 +44,7 @@ for ii = 1:frames:numel(inputEXRs)
     end
     % need to write out
     outputFileName = fullfile( outputDir, sprintf('%s-%03d-%03d.mat', ...
-        basename, ii, ii+frameCount-1));
+        basename, ii, ii+frameCount));
     save(outputFileName,'outputScene');
     
 end
