@@ -3,9 +3,9 @@ function sceneCompare(sceneFile1,sceneFile2)
 %   Specifically designed for seeing if additive exposures work
 
 %{
-sceneHomeDir = fullfile(ivDirGet('local'), 'pavilion-night');
-sceneCompare(fullfile(sceneHomeDir,'frames-16ms','generated-33ms','pav-001-002.mat'), ...
-    fullfile(sceneHomeDir, 'frames-33ms','generated-scenes','pav-001-001.mat'));
+sceneHomeDir = fullfile(ivDirGet('local'), 'synthetic_scene_tests','generated');
+sceneCompare(fullfile(sceneHomeDir,'pav*016*.mat'), ...
+    fullfile(sceneHomeDir, 'pav*033*.mat'));
 %}
 
 % Load our scenes
