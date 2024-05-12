@@ -4,8 +4,8 @@ function sceneCompare(sceneFile1,sceneFile2)
 
 %{
 sceneHomeDir = fullfile(ivDirGet('local'), 'synthetic_scene_tests','generated');
-sceneCompare(fullfile(sceneHomeDir,'pav*016*.mat'), ...
-    fullfile(sceneHomeDir, 'pav*033*.mat'));
+sceneCompare(fullfile(sceneHomeDir,'pavilion-day016-001-002.mat'), ...
+    fullfile(sceneHomeDir, 'pavilion-day033-001-001.mat'));
 %}
 
 % Load our scenes
