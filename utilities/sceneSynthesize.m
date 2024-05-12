@@ -34,7 +34,9 @@ for ii = 1:frames:numel(inputEXRs)
                 if isempty(outputScene)
                     outputScene = ourScene;
                 else
-                    outputScene = sceneAdd(outputScene, ourScene);;
+                    % This might give us a running average instead of
+                    % a True Average!
+                    outputScene = sceneAdd({outputScene, ourScene}, repelem(1,2), 'average');
                 end
                 frameCount = jj;
             end
