@@ -18,6 +18,8 @@ sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-d
 sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*033*.exr'),1);
 %}
 
+
+
 inputEXRs = dir(filespec);
 
 [dirPath, basename, ~] = fileparts(filespec);

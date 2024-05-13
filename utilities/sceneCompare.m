@@ -8,6 +8,9 @@ sceneCompare(fullfile(sceneHomeDir,'pavilion-day016-001-002.mat'), ...
     fullfile(sceneHomeDir, 'pavilion-day033-001-001.mat'));
 %}
 
+% Pick a sensor
+useSensor = 'Monochrome';
+
 % Load our scenes
 scene1 = load(sceneFile1,'outputScene');
 scene1Data = scene1.outputScene;
@@ -33,11 +36,14 @@ oi2 = oiCompute(oi2, scene2Data);
 %{
 mean(oi1.data.photons, 'all')
 mean(oi2.data.photons, 'all')
+
+mean(oi1.data.illuminance, 'all')
+mean(oi2.data.illuminance, 'all')
 %}
 
 % create an arbitray sensor so we get an RGB image
-sensor1 = sensorCreate('imx363'); % oldie but a goodie
-sensor2 = sensorCreate('imx363'); % oldie but a goodie
+sensor1 = sensorCreate(useSensor); % oldie but a goodie
+sensor2 = sensorCreate(useSensor); % oldie but a goodie
 
 % compute the image recorded by the sensor
 sensor1 = sensorCompute(sensor1, oi1);
@@ -52,7 +58,7 @@ mean(sensor2.data.volts, 'all')
 
 %}
 
-mesh(sensor1.data.dv - sensor2.data.dv);
+mesh(sensor1.data.volts - sensor2.data.volts);
 % Do a comparison & measure results
 %montage({image1, image2});
 
