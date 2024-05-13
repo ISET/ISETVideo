@@ -12,10 +12,12 @@ function sceneSynthesize(filespec,frames)
 %
 % D.Cardinal, Stanford University, 2024
 %{
-sceneSynthesize(fullfile(ivDirGet('local'), 'pavilion-night', 'synthetic-scene-test', 'pav*033*.exr'),1);
-
 sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*016*.exr'),2);
 sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*033*.exr'),1);
+
+% for debug
+sceneSynthesize(fullfile(ivDirGet('local'), 'synthetic_scene_tests', 'pavilion-day*016*.exr'),1);
+
 %}
 
 

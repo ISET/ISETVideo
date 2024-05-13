@@ -58,14 +58,14 @@ sceneName = 'pavilion-day';
 cameraMotion = createCameraMotion(sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
-clipLength = 1/30; %.02; % seconds
-exposureTime = 1/60; %1/8; %.001; % seconds
+clipLength = 1/15; %.02; % seconds
+exposureTime = 1/30; %1/8; %.001; % seconds
 videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 2048;
 % Fast Preview Factor (we only denoise when fastPreview > 1)
-fastPreview = 1 ; % >1 is multiplierfor for faster rendering
+fastPreview = 2 ; % >1 is multiplierfor for faster rendering
 
 % Calculate the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -190,8 +190,8 @@ switch preset
         cameraMotion.x = adjustScale * -10; % m/s x, y, z
         cameraMotion.y = -1; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
-        cameraMotion.xRot = -6; % d/s rx, ry, rz
-        cameraMotion.yRot = adjustScale * 30; % d/s rx, ry, rz
+        cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
+        cameraMotion.yRot = 0; % adjustScale * 30; % d/s rx, ry, rz
         cameraMotion.zRot = 0; % d/s rx, ry, rz    end
 
 end
