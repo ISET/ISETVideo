@@ -1,4 +1,5 @@
-%% s_sceneVideoClip
+function sceneVideoClip(sceneName)
+%% sceneVideoClip
 %
 % Create a short "video clip" of scenes
 %
@@ -58,14 +59,14 @@ sceneName = 'pavilion-day';
 cameraMotion = createCameraMotion(sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
-clipLength = 1/15; %.02; % seconds
-exposureTime = 1/30; %1/8; %.001; % seconds
+clipLength = 1/30; %.02; % seconds
+exposureTime = 1/60; %1/8; %.001; % seconds
 videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
 nativeRaysPerPixel = 2048;
 % Fast Preview Factor (we only denoise when fastPreview > 1)
-fastPreview = 2 ; % >1 is multiplierfor for faster rendering
+fastPreview = 1 ; % >1 is multiplierfor for faster rendering
 
 % Calculate the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -178,6 +179,7 @@ glData = rendererinfo;
 disp(strcat("Local cpCam ran  in: ", string(afterTime - beforeTime), " seconds of CPU time."));
 disp(strcat("Total cpCam ran  in: ", string(tTotal), " total seconds."));
 
+end
 %% Create scene specific camera paths using x,y,z constant motions & rotations
 %  Set useActiveCameraMotion to use ActiveTransforms
 %  otherwise Translate and Rotate are used

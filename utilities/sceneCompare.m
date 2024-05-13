@@ -53,6 +53,11 @@ mean(oi2.data.illuminance, 'all')
 sensor1 = sensorCreate(useSensor); % oldie but a goodie
 sensor2 = sensorCreate(useSensor); % oldie but a goodie
 
+sensor1 = sensorSet(sensor1,'rows',480);
+sensor1 = sensorSet(sensor1,'cols',640);
+sensor2 = sensorSet(sensor2,'rows',480);
+sensor2 = sensorSet(sensor2,'cols',640);
+
 % We don't want AutoExposure
 sensor1 = sensorSet(sensor1,'integration time', exposureTime);
 sensor2 = sensorSet(sensor2,'integration time', exposureTime);
