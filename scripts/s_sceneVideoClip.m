@@ -30,8 +30,8 @@ tStart = tic;
 
 %% Primary scenes for video clip work
 scenePath = 'barcelona-pavilion';
-sceneName = 'pavilion-night';
-%sceneName = 'pavilion-day';
+%sceneName = 'pavilion-night';
+sceneName = 'pavilion-day';
 
 %% Also Working (at least without Active motion)
 %scenePath = 'sanmiguel';
@@ -58,12 +58,12 @@ sceneName = 'pavilion-night';
 cameraMotion = createCameraMotion(sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
-clipLength = .2; %.02; % seconds
-exposureTime = 1/30; %1/8; %.001; % seconds
+clipLength = 1/30; %.02; % seconds
+exposureTime = 1/60; %1/8; %.001; % seconds
 videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel = 1024;
+nativeRaysPerPixel = 2048;
 % Fast Preview Factor (we only denoise when fastPreview > 1)
 fastPreview = 1 ; % >1 is multiplierfor for faster rendering
 
