@@ -3,8 +3,8 @@ classdef ivScenario < handle
     %   D. Cardinal, Stanford University, 2024
     
     properties
-        sceneName = 'pavilion-night';
-        eposureTime = 1/30;
+        sceneName = 'pavilion-day';
+        exposureTime = 1/30;
         clipLength = 1/15;
         raysPerPixel = 1024;
         fastPreview = 1;
@@ -12,8 +12,9 @@ classdef ivScenario < handle
     end
     
     methods
-        function obj = ivScenario(inputArg1,inputArg2)
+        function obj = ivScenario(sceneName)
             %IVSCENARIO Construct an instance of this class
+            obj.sceneName = sceneName;
         end
         
     end

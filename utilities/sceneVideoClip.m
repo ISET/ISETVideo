@@ -17,7 +17,6 @@ function sceneVideoClip(scenario)
 % Developed by David Cardinal, Stanford University, 2020-2024.
 %
 
-ieInit();
 % some timing code, just to see how fast we run...
 benchmarkstart = cputime;
 tStart = tic;
@@ -29,7 +28,7 @@ tStart = tic;
 %% Our Parameters (could be passed if we make this a function)
 
 % scenes
-
+sceneName = scenario.sceneName;
 
 %% Set camera motion here using a per-scene preset
 cameraMotion = createCameraMotion(scenario.sceneName);
@@ -84,6 +83,9 @@ pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
     'numRays', raysPerPixel, ...
     'resolution', [ourCols ourRows],...
     'useActiveCameraMotion', cameraMotion.useActiveCameraMotion);
+
+% Camera motion gets confused by some scales
+pbrtCPScene.thisR = recipeSet(pbrtCPScene.thisR,'scale',[1 1 1]);
 
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate

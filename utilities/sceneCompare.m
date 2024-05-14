@@ -1,4 +1,4 @@
-function sceneCompare(sceneFile1,sceneFile2, exposureTime)
+function [sensor1, sensor2] = sceneCompare(sceneFile1,sceneFile2, exposureTime)
 %SCENECOMPARE Compare radiance of two scenes
 %   Specifically designed for seeing if additive exposures work
 
@@ -75,7 +75,8 @@ mean(sensor2.data.volts, 'all')
 
 %}
 
-mesh(sensor1.data.volts - sensor2.data.volts);
+% if we want to show results
+% mesh(sensor1.data.volts - sensor2.data.volts);
 %{
 % Do a comparison & measure results
 image1 = sensorShowImage(sensor1,1);
