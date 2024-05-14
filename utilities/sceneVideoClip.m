@@ -46,11 +46,6 @@ fastPreview = scenario.fastPreview; % >1 is multiplierfor for faster rendering
 % Calculate the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
 
-%% NOTE: Currently we stop at Scene, so camera code is mostly moot
-% We'll use a pre-defined sensor for our Camera Module, and let it use
-% default optics for now. We can then assign the module to our camera:
-% NOTE: When generating just scenes, this is ignored
-%# sensor = sensorCreate('imx363');
 
 % The sensor comes in with a small default resolution, and in any case
 % well want to decide on one for ourselves:
@@ -61,23 +56,9 @@ raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 ourRows = floor(nativeSensorResolution / fastPreview);
 ourCols = floor(aspectRatio * ourRows);
 
-%# sensor = sensorSet(sensor,'size',[ourRows ourCols]);
-%# sensor = sensorSet(sensor,'noiseFlag', 0); % 0 is less noise
-
-% Make the pixels bigger, but keep the sensor the same size
-% This is useful for previewing more quickly:
-%# nativePSize = pixelGet(sensor.pixel,'pixel width');
-%# previewPSize = nativePSize * fastPreview;
-%# sensor.pixel = pixelSet(sensor.pixel,'sizesamefillfactor',[previewPSize previewPSize]);
-
-
-% Cameras can eventually have more than one module (lens + sensor)
-% but for now, we just create one using our sensor
-%# ourCamera.cmodules(1) = cpCModule('sensor', sensor);
-
 %}
 
-%% NOTE: Not sure if this works without a scenepath -- need to check
+%% Set scene
 pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
     'sceneLuminance', 500, ...
     'numRays', raysPerPixel, ...
@@ -128,8 +109,6 @@ for ii=1:numel(sceneList)
 
     % Experiment with different
     ourFrame = sceneShowImage(deNoiseScene, -3);    % Compute, but don't show
-    %ourIP = piRadiance2RGB(deNoiseScene);
-    %videoFrames{ii} = im2frame(double(ourIP.data.result));
     videoFrames{ii} = im2frame(double(ourFrame));
 
 end
