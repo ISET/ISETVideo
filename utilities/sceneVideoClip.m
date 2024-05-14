@@ -1,5 +1,6 @@
 function sceneVideoClip(sceneName)
 %% sceneVideoClip
+% NOTE: Need to parameterize hard-coded options
 %
 % Create a short "video clip" of scenes
 %
@@ -30,9 +31,9 @@ tStart = tic;
 % scenes
 
 %% Primary scenes for video clip work
-scenePath = 'barcelona-pavilion';
+%scenePath = 'barcelona-pavilion';
 %sceneName = 'pavilion-night';
-sceneName = 'pavilion-day';
+%sceneName = 'pavilion-day';
 
 %% Also Working (at least without Active motion)
 %scenePath = 'sanmiguel';
