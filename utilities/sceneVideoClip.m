@@ -1,4 +1,4 @@
-function sceneVideoClip(sceneName)
+function sceneVideoClip(scenario)
 %% sceneVideoClip
 % NOTE: Need to parameterize hard-coded options
 %
@@ -30,44 +30,19 @@ tStart = tic;
 
 % scenes
 
-%% Primary scenes for video clip work
-%scenePath = 'barcelona-pavilion';
-%sceneName = 'pavilion-night';
-%sceneName = 'pavilion-day';
-
-%% Also Working (at least without Active motion)
-%scenePath = 'sanmiguel';
-%sceneName = 'sanmiguel-courtyard';
-%sceneName = 'sanmiguel-realistic-courtyard';
-%scenePath = 'bistro';
-%sceneName = 'bistro_boulangerie';
-%%sceneName = 'bistro_cafe';
-%sceneName = 'bistro_vespa';
-%scenePath = 'contemporary-bathroom';
-%sceneName = 'contemporary-bathroom';
-%scenePath = 'landscape';
-%sceneName = 'view-0';
-
-%% Not working at all
-% Can't render Kroken due to mixed texture bug
-%scenePath = 'kroken';
-%sceneName = 'camera-1';
-% Can't render villa due to some type of wavefront error
-%scenePath = 'villa';
-%sceneName = 'villa-daylight';
 
 %% Set camera motion here using a per-scene preset
-cameraMotion = createCameraMotion(sceneName);
+cameraMotion = createCameraMotion(scenario.sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
-clipLength = 1/30; %.02; % seconds
-exposureTime = 1/60; %1/8; %.001; % seconds
+clipLength = scenario.clipLength;
+exposureTime = scenario.exposureTime; % seconds
 videoFPS = 20; % How many frames per second to encode
 
 % Rays per pixel (more is slower, but less noisy)
-nativeRaysPerPixel = 2048;
+nativeRaysPerPixel = scenario.raysPerPixel;
 % Fast Preview Factor (we only denoise when fastPreview > 1)
-fastPreview = 1 ; % >1 is multiplierfor for faster rendering
+fastPreview = scenario.fastPreview; % >1 is multiplierfor for faster rendering
 
 % Calculate the number of frames for our video
 numFrames = floor(clipLength / exposureTime);
@@ -103,7 +78,8 @@ ourCols = floor(aspectRatio * ourRows);
 
 %}
 
-pbrtCPScene = cpScene('pbrt', 'scenePath', scenePath, 'sceneName', sceneName, ...
+%% NOTE: Not sure if this works without a scenepath -- need to check
+pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
     'sceneLuminance', 500, ...
     'numRays', raysPerPixel, ...
     'resolution', [ourCols ourRows],...
