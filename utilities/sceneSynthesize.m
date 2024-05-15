@@ -27,10 +27,7 @@ inputEXRs = dir(filespec);
 [dirPath, basename, ~] = fileparts(filespec);
 basename = replace(basename,'*','');
 
-outputDir = fullfile(dirPath,'generated');
-if ~isfolder(outputDir)
-    mkdir(outputDir);
-end
+outputDir = ivDirGet('computed');
 
 outputScene = [];
 for ii = 1:frames:numel(inputEXRs)

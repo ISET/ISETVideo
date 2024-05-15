@@ -21,7 +21,7 @@ switch dirType
     case 'data'
         ourDir = fullfile(rootDir, 'data');
     case 'computed'
-        ourDir = fullfile( rootDir, 'local', 'computed')
+        ourDir = fullfile( rootDir, 'local', 'computed');
         if ~isfolder(ourDir)
             mkdir(ourDir);
         end
