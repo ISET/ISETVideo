@@ -8,6 +8,7 @@ classdef ivScenario < handle
         clipLength = 1/15;
         raysPerPixel = 1024;
         fastPreview = 1;
+        thisD =[]; % select custom docker wrapper if needed
 
     end
     
