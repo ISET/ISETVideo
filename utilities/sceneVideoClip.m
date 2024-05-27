@@ -154,17 +154,17 @@ switch preset
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
         adjustScale = 1; % In pavilion x-axis is reversed
-        cameraMotion.x = adjustScale * -10; % m/s x, y, z
-        cameraMotion.y = -1; % m/s x, y, z
+        cameraMotion.x = 0; %adjustScale * -10; % m/s x, y, z
+        cameraMotion.y = 0; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
-        cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
+        cameraMotion.xRot = 30; %-6; % d/s rx, ry, rz
         cameraMotion.yRot = 0; % adjustScale * 30; % d/s rx, ry, rz
         cameraMotion.zRot = 0; % d/s rx, ry, rz    end
     case {'macbeth','macbeth checker','MacBethChecker'}
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
         adjustScale = 1; % In pavilion x-axis is reversed
-        cameraMotion.x = 0; % adjustScale * -.1; % m/s x, y, z
+        cameraMotion.x = 5; % adjustScale * -.1; % m/s x, y, z
         cameraMotion.y = 0; %-1; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
         cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz

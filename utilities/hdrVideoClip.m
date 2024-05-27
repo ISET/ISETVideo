@@ -4,7 +4,7 @@ function outputVideo = hdrVideoClip(filespec)
 %{
 % example code
 hdrVideoClip(fullfile(ivDirGet('computed'), 'bunny*001.exr'))
-hdrVideoClip(fullfile(ivDirGet('local')', 'pavilion-night','frames-033ms','pav*.exr'))
+hdrVideoClip(fullfile(ivDirGet('computed'), 'pavilion-night*010.exr'));
 hdrVideoClip(fullfile(ivDirGet('local'), 'pavilion-night', 'frames-001ms','generated--004ms','pav*.mat'));
 hdrVideoClip(fullfile(ivDirGet('local'),'pavilion-night/33 ms frames and preview video/pav*.exr');
 %}
@@ -40,7 +40,7 @@ for ii = 1:numel(hdrList)
     end
     sceneDeNoise = scene; %piAIdenoise(scene);
     % 
-    rgb = sceneShowImage(sceneDeNoise, -1);
+    rgb = sceneShowImage(sceneDeNoise, -3); % hdr without GUI
     demoVideo(rgb);
     clear scene;
     clear sceneDeNoise;
