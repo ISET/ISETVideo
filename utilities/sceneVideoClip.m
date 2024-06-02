@@ -69,6 +69,10 @@ pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
 % Camera motion gets confused by some scales
 pbrtCPScene.thisR = recipeSet(pbrtCPScene.thisR,'scale',[1 1 1]);
 
+% This is almost certainly  the wrong place to do this
+if isequal(sceneName, 'bunny')
+    pbrtCPScene.thisR = recipeSet(pbrtCPScene.thisR,'skymap','room.exr');
+end
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
 % Z is into scene, Y is up, X is right
@@ -157,8 +161,8 @@ switch preset
         cameraMotion.x = 0; %adjustScale * -10; % m/s x, y, z
         cameraMotion.y = 0; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
-        cameraMotion.xRot = 30; %-6; % d/s rx, ry, rz
-        cameraMotion.yRot = 0; % adjustScale * 30; % d/s rx, ry, rz
+        cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
+        cameraMotion.yRot = 5; % adjustScale * 30; % d/s rx, ry, rz
         cameraMotion.zRot = 0; % d/s rx, ry, rz    end
     case {'macbeth','macbeth checker','MacBethChecker'}
         % In m/s and d/s
@@ -179,6 +183,16 @@ switch preset
         cameraMotion.z = 0; % m/s x, y, z
         cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
         cameraMotion.yRot = 0; % adjustScale * 30; % d/s rx, ry, rz
+        cameraMotion.zRot = 0; % d/s rx, ry, rz    end
+    case {'bunny'}
+        % In m/s and d/s
+        cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
+        adjustScale = 1; % In pavilion x-axis is reversed
+        cameraMotion.x = adjustScale * .5; % m/s x, y, z
+        cameraMotion.y = -.1; % m/s x, y, z
+        cameraMotion.z = 0; % m/s x, y, z
+        cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
+        cameraMotion.yRot = 0; 5-10; % adjustScale * 30; % d/s rx, ry, rz
         cameraMotion.zRot = 0; % d/s rx, ry, rz    end
     otherwise
         % In m/s and d/s

@@ -3,12 +3,13 @@ function outputVideo = hdrVideoClip(filespec)
 
 %{
 % example code
-hdrVideoClip(fullfile(ivDirGet('computed'), 'bunny*001.exr'))
+%% 
+hdrVideoClip(fullfile(ivDirGet('computed'), 'bunny*010.exr'))
 hdrVideoClip(fullfile(ivDirGet('computed'), 'pavilion-night*010.exr'));
 hdrVideoClip(fullfile(ivDirGet('local'), 'pavilion-night', 'frames-001ms','generated--004ms','pav*.mat'));
 hdrVideoClip(fullfile(ivDirGet('local'),'pavilion-night/33 ms frames and preview video/pav*.exr');
 %}
-videoFPS = 30; % 2 is show slowly
+videoFPS = 1; % 2 is show slowly
 
 hdrList = dir(filespec);
 [hdrPath, basename, ext] = fileparts(filespec);
