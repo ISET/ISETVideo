@@ -188,8 +188,8 @@ switch preset
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
         adjustScale = 1; % In pavilion x-axis is reversed
-        cameraMotion.x = adjustScale * .5; % m/s x, y, z
-        cameraMotion.y = -.1; % m/s x, y, z
+        cameraMotion.x = adjustScale * .1; % m/s x, y, z
+        cameraMotion.y = -.05; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
         cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
         cameraMotion.yRot = 0; 5-10; % adjustScale * 30; % d/s rx, ry, rz

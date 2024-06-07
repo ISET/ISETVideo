@@ -4,7 +4,7 @@ function outputVideo = hdrVideoClip(filespec)
 %{
 % example code
 %% 
-hdrVideoClip(fullfile(ivDirGet('computed'), 'bunny*010.exr'))
+hdrVideoClip(fullfile(ivDirGet('computed'), 'bunny*005.exr'))
 hdrVideoClip(fullfile(ivDirGet('computed'), 'pavilion-night*010.exr'));
 hdrVideoClip(fullfile(ivDirGet('local'), 'pavilion-night', 'frames-001ms','generated--004ms','pav*.mat'));
 hdrVideoClip(fullfile(ivDirGet('local'),'pavilion-night/33 ms frames and preview video/pav*.exr');
