@@ -9,7 +9,7 @@ classdef ivScenario < handle
         raysPerPixel = 1024;
         fastPreview = 1;
         thisD =[]; % select custom docker wrapper if needed
-
+        allowsObjectMotion = false;
     end
     
     methods

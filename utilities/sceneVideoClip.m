@@ -31,7 +31,7 @@ tStart = tic;
 sceneName = scenario.sceneName;
 
 %% Set camera motion here using a per-scene preset
-cameraMotion = createCameraMotion(scenario.sceneName);
+[cameraMotion, objectMotion] = createMotion(scenario, scenario.sceneName);
 
 % Set overall length, frame rate, and preview video replay rate
 clipLength = scenario.clipLength;
@@ -56,7 +56,18 @@ raysPerPixel = floor(nativeRaysPerPixel/fastPreview);
 ourRows = floor(nativeSensorResolution / fastPreview);
 ourCols = floor(aspectRatio * ourRows);
 
-%}
+%% Set up correct docker image
+% isetdocker ignores the docker container we pass and uses presets
+% so for now we have to clear out the container
+reset(isetdocker);
+if scenario.allowsObjectMotion
+    % NOTE: Need to use a cpu version of pbrt for this case
+    dockerCPU = isetdocker('preset','orange-cpu');
+    scenario.thisD = dockerCPU;
+else
+    dockerGPU = isetdocker('preset','remoteorange');
+    scenario.thisD = dockerGPU;
+end
 
 %% Set scene
 pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
@@ -64,15 +75,12 @@ pbrtCPScene = cpScene('pbrt', 'sceneName', sceneName, ...
     'numRays', raysPerPixel, ...
     'resolution', [ourCols ourRows],...
     'useActiveCameraMotion', cameraMotion.useActiveCameraMotion, ...
+    'allowsObjectMotion', scenario.allowsObjectMotion, ...
     'thisD', scenario.thisD);
 
 % Camera motion gets confused by some scales
 pbrtCPScene.thisR = recipeSet(pbrtCPScene.thisR,'scale',[1 1 1]);
 
-% This is almost certainly  the wrong place to do this
-if isequal(sceneName, 'bunny')
-    pbrtCPScene.thisR = recipeSet(pbrtCPScene.thisR,'skymap','room.exr');
-end
 % set the camera in motion, using meters per second per axis
 % 'unused', then translate, then rotate
 % Z is into scene, Y is up, X is right
@@ -99,6 +107,11 @@ else
         [translateXPerFrame, translateYPerFrame, translateZPerFrame], ...
         [rotateXPerFrame, rotateYPerFrame, rotateZPerFrame]}};
 end
+
+if ~isempty(objectMotion)
+    pbrtCPScene.objectMotion = objectMotion;
+end
+
 [sceneList, ~, ~] = pbrtCPScene.render(repelem(exposureTime, numFrames));
 
 % renderedFiles has the .exr files, sceneList has the .mat files for scenes
@@ -152,7 +165,7 @@ end
 %% Create scene specific camera paths using x,y,z constant motions & rotations
 %  Set useActiveCameraMotion to use ActiveTransforms
 %  otherwise Translate and Rotate are used
-function cameraMotion = createCameraMotion(preset)
+function [cameraMotion, objectMotion] = createMotion(scenario, preset)
 switch preset
     case {'pavilion-night', 'pavilion-day'}
         % In m/s and d/s
@@ -188,12 +201,16 @@ switch preset
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
         adjustScale = 1; % In pavilion x-axis is reversed
-        cameraMotion.x = adjustScale * .1; % m/s x, y, z
-        cameraMotion.y = -.05; % m/s x, y, z
+        cameraMotion.x = adjustScale * 0; % m/s x, y, z
+        cameraMotion.y = 0; % m/s x, y, z
         cameraMotion.z = 0; % m/s x, y, z
-        cameraMotion.xRot = 0; %-6; % d/s rx, ry, rz
-        cameraMotion.yRot = 0; 5-10; % adjustScale * 30; % d/s rx, ry, rz
+        cameraMotion.xRot = 0; % d/s rx, ry, rz
+        cameraMotion.yRot = 0; % 5-10; % adjustScale * 30; % d/s rx, ry, rz
         cameraMotion.zRot = 0; % d/s rx, ry, rz    end
+
+        % try to add moving the bunny here
+        scenario.allowsObjectMotion = true;
+        objectMotion.transform = {{'Bunny_O', [2 0 0], [0 0 0]}};
     otherwise
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
