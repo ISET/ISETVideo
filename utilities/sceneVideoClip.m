@@ -210,7 +210,7 @@ switch preset
 
         % try to add moving the bunny here
         scenario.allowsObjectMotion = true;
-        objectMotion.transform = {{'Bunny_O', [2 0 0], [0 0 0]}};
+        objectMotion.transform = {{'Bunny_O', [0 1 0], [0 0 0]}};
     otherwise
         % In m/s and d/s
         cameraMotion.useActiveCameraMotion = true; % use moving camera instead of translate/rotate
