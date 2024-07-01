@@ -78,7 +78,7 @@ sensor2 = sensorSet(sensor2,'integration time', exposureTime);
 %%%% NOTE: I'm not sure why we are running into this and wheter the default
 % oi should have photons of type do
 oi1.data.photons = double(oi1.data.photons);
-oi1.data.photons = double(oi1.data.photons);
+oi2.data.photons = double(oi2.data.photons);
 
 % compute the image recorded by the sensor
 sensor1 = sensorCompute(sensor1, oi1);
