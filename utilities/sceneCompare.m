@@ -2,6 +2,8 @@ function [sensor1, sensor2] = sceneCompare(sceneFile1,sceneFile2, exposureTime)
 %SCENECOMPARE Compare radiance of two scenes
 %   Specifically designed for seeing if additive exposures work
 
+% Updated to accept pre-loaded scenes
+
 %{
 sceneHomeDir = fullfile(ivDirGet('local'), 'synthetic_scene_tests','generated');
 sceneCompare(fullfile(sceneHomeDir,'pavilion-day016-001-002.mat'), ...
@@ -17,11 +19,18 @@ sceneCompare(fullfile(sceneHomeDir,'pavilion-day016-001-001.mat'), ...
 useSensor = 'Monochrome';
 
 % Load our scenes
-scene1 = load(sceneFile1,'outputScene');
-scene1Data = scene1.outputScene;
-scene2 = load(sceneFile2,'outputScene');
-scene2Data = scene2.outputScene;
-
+if isequal(class(sceneFile1),'struct')
+    scene1Data = sceneFile1;
+else
+    scene1 = load(sceneFile1,'outputScene');
+    scene1Data = scene1.outputScene;
+end
+if isequal(class(sceneFile2),'struct')
+    scene2Data = sceneFile2;
+else
+    scene2 = load(sceneFile2,'outputScene');
+    scene2Data = scene2.outputScene;
+end
 % Without denoising we get massive luminance spikes
 scene1Data = piAIdenoise(scene1Data);
 scene2Data = piAIdenoise(scene2Data);
